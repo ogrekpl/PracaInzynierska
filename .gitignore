@@ -1,0 +1,7 @@
+pracaInz/.eslintignore
+pracaInz/.forceignore
+pracaInz/.gitignore
+pracaInz/.prettierignore
+pracaInz/.prettierrc
+pracaInz/.husky/pre-commit
+pracaInz/manifest/package.xml
