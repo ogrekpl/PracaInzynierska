@@ -3,7 +3,7 @@ public with sharing class OpportunityDMN {
     private static final String CUSTOMER = 'Customer';
     private static final String SUPPLIER = 'Supplier';
 
-    public static void CreateName(List<Opportunity> oppToUpdate) {
+    public static void createName(List<Opportunity> oppToUpdate) {
 
         Set<String> accountcsIdSet = new Set<String>();
         Set<String> productsIdSet = new Set<String>();
@@ -51,7 +51,7 @@ public with sharing class OpportunityDMN {
         } 
     }
 
-    public static void VerifyName(Map<String, Opportunity> oldOppMap, Map<String, Opportunity> newOppMap) {
+    public static void verifyName(Map<Id, Opportunity> oldOppMap, Map<Id, Opportunity> newOppMap) {
 
         List<Opportunity> oppToUpdateNameList = new List<Opportunity>();
 
@@ -61,6 +61,13 @@ public with sharing class OpportunityDMN {
             }
         }
 
-        CreateName(oppToUpdateNameList);
+        createName(oppToUpdateNameList);
+    }
+
+    public static void calculateTotalPrice(List<Opportunity> oppList) {
+        for (Opportunity thisOpp : oppList) {
+            if (thisOpp.Quantity__c != null && thisOpp.Package_price__c != null)
+                thisOpp.Amount = thisOpp.Quantity__c * thisOpp.Package_price__c;
+        }
     }
 }

@@ -39,10 +39,7 @@ global class OpportunityDMN_TEST {
         
         Opportunity opp = [SELECT Name FROM Opportunity LIMIT 1];
 
-        System.debug('expectedName: ' + expectedName);
-        System.debug('sellOpp.Name: ' + sellOpp.Name);
-
-        System.assertEquals(expectedName, opp.Name, 'Name is incorect');
+        System.assertEquals(expectedName, opp.Name, 'Name is incorect.');
     }
 
     @isTest
@@ -52,7 +49,7 @@ global class OpportunityDMN_TEST {
 
         Account acc = [SELECT Id FROM Account WHERE Name =: ACCOUNT_NAME LIMIT 1];
         Product2 prod = [SELECT Id FROM Product2 WHERE Name =: PRODUCT_NAME LIMIT 1];
-        Opportunity buyOpp = new Opportunity(Name = 'x', AccountId = acc.Id, Product__c = prod.Id,  StageName = 'Prospecting', CloseDate = date.today(), RecordTypeId = customerRecordTypeId);
+        Opportunity buyOpp = new Opportunity(Name = 'x', AccountId = acc.Id, Product__c = prod.Id, StageName = 'Prospecting', CloseDate = date.today(), RecordTypeId = customerRecordTypeId);
 
         Test.startTest();
         insert(buyOpp);
@@ -60,9 +57,72 @@ global class OpportunityDMN_TEST {
 
         Opportunity opp = [SELECT Name FROM Opportunity LIMIT 1];
 
-        System.debug('expectedName: ' + expectedName);
-        System.debug('sellOpp.Name: ' + buyOpp.Name);
+        System.assertEquals(expectedName, opp.Name, 'Name is incorect.'); 
+    }
 
-        System.assertEquals(expectedName, opp.Name, 'Name is incorect'); 
+    @isTest
+    public static void PriceShouldBeCalculatedCorrect() {
+        Id customerRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get(CUSTOMER).getRecordTypeId();
+        String expectedName = 'BUY Mozzarella - ABSR';
+
+        Account acc = [SELECT Id FROM Account WHERE Name =: ACCOUNT_NAME LIMIT 1];
+        Product2 prod = [SELECT Id FROM Product2 WHERE Name =: PRODUCT_NAME LIMIT 1];
+        List<Opportunity> oppToInsertList = TestDataFactory.createSObjectList('Opportunity', new Map<String, Object>{
+           'Name' => 'x',
+           'AccountId' => acc.Id,
+           'Product__c' => prod.Id,
+           'StageName' => 'Prospecting',
+           'CloseDate' => date.today(),
+           'RecordTypeId' => customerRecordTypeId,
+           'Quantity__c' => 13,
+           'Package_price__c' => 10
+        }, 100, false);
+
+        Test.startTest();
+        insert(oppToInsertList);
+        Test.stopTest();
+
+        List<Opportunity> oppToValidateList = [SELECT Amount FROM Opportunity LIMIT 100];
+        Boolean isValid = true;
+
+        for (Opportunity thisOpp : oppToValidateList) {
+            if (thisOpp.Amount != 130) {
+                isValid = false;
+            }
+        }
+
+        System.assertEquals(true, isValid, 'Total Price is not calculated corect.'); 
+    }
+    
+    @isTest
+    public static void PriceShouldBeNotCalculated() {
+        Id customerRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get(CUSTOMER).getRecordTypeId();
+        String expectedName = 'BUY Mozzarella - ABSR';
+
+        Account acc = [SELECT Id FROM Account WHERE Name =: ACCOUNT_NAME LIMIT 1];
+        Product2 prod = [SELECT Id FROM Product2 WHERE Name =: PRODUCT_NAME LIMIT 1];
+        List<Opportunity> oppToInsertList = TestDataFactory.createSObjectList('Opportunity', new Map<String, Object>{
+           'Name' => 'x',
+           'AccountId' => acc.Id,
+           'Product__c' => prod.Id,
+           'StageName' => 'Prospecting',
+           'CloseDate' => date.today(),
+           'RecordTypeId' => customerRecordTypeId
+        }, 100, false);
+
+        Test.startTest();
+        insert(oppToInsertList);
+        Test.stopTest();
+
+        List<Opportunity> oppToValidateList = [SELECT Amount FROM Opportunity LIMIT 100];
+        Boolean isValid = true;
+
+        for (Opportunity thisOpp : oppToValidateList) {
+            if (thisOpp.Amount != null) {
+                isValid = false;
+            }
+        }
+
+        System.assertEquals(true, isValid, 'Total Price is not calculated corect.'); 
     }
 }
