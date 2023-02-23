@@ -1,0 +1,12 @@
+<apex:page showHeader="false" standardController="Contract">
+    File is being downloaded. If it doesn't download, <a href="/apex/GenerateContractPDF?id={!contract.Id}" id="lnkDownload" target="_blank" download="{!contract.ContractNumber}.pdf" onload="auto_download();">click here</a> to download file.
+    
+    <script>
+    	function auto_download(){
+        	document.getElementById('lnkDownload').click();
+      };
+      
+      //trigger auto-download
+    	window.setTimeout(auto_download, 10);
+    </script>
+</apex:page>
