@@ -46,7 +46,7 @@ global class DeliveryStopDMN_Test {
             'Package_price__c' => 1
          });
 
-         Opportunity opp2 = (Opportunity)TestDataFactory.createSObject('Opportunity', new Map<String, Object>{
+        Opportunity opp2 = (Opportunity)TestDataFactory.createSObject('Opportunity', new Map<String, Object>{
             'Name' => 'x',
             'AccountId' => acc.Id,
             'Company_Product__c' => cProd.Id,
@@ -55,19 +55,19 @@ global class DeliveryStopDMN_Test {
             'RecordTypeId' => supplierRecordTypeId,
             'Quantity__c' => 1,
             'Package_price__c' => 1
-         });
+        });
 
-         Contract con1 = (Contract)TestDataFactory.createSObject('Contract', new Map<String, Object>{
+        Contract con1 = (Contract)TestDataFactory.createSObject('Contract', new Map<String, Object>{
             'AccountId' => acc.Id,
             'Opportunity__c' => opp1.Id,
             'Status' => 'Verification'
-         });
+        });
 
-         Contract con2 = (Contract)TestDataFactory.createSObject('Contract', new Map<String, Object>{
+        Contract con2 = (Contract)TestDataFactory.createSObject('Contract', new Map<String, Object>{
             'AccountId' => acc.Id,
             'Opportunity__c' => opp2.Id,
             'Status' => 'Verification'
-         });
+        });
 
         Approval.ProcessSubmitRequest req1 = new Approval.ProcessSubmitRequest();
         req1.setComments('Submitting request for approval.');

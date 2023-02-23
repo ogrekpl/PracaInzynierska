@@ -29,7 +29,7 @@ public class GenerateContractPDFController {
     public String getSignedDate() {
         return signedDate;
     }
-
+    
     private String generateSignedDate() {
         String sgnDate = '';
         Date todayDate = Date.today();
