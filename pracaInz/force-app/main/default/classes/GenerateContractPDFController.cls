@@ -2,7 +2,10 @@ public class GenerateContractPDFController {
 	private final Account customer;
     private final Account company;
     private final Contract contract;
-    private final String signedDate; 
+    private final String signedDate;
+
+    @TestVisible
+    private final static String OUR_COMPANY_NAME = 'ABSR sp.z.o.o'; 
 
     public GenerateContractPDFController() {
         contract = [SELECT Id, ContractNumber, Opportunity_Price__c, AccountId FROM Contract 
@@ -10,7 +13,7 @@ public class GenerateContractPDFController {
         customer = [SELECT Id, Name, BillingCity, BillingCountry, BillingPostalCode, BillingStreet, NIP__c
                     FROM Account WHERE Id =: contract.AccountId LIMIT 1];
         company = [SELECT Id, Name, BillingCity, BillingCountry, BillingPostalCode, BillingStreet, NIP__c
-                    FROM Account WHERE Name = 'ABSR sp.z.o.o' LIMIT 1];
+                    FROM Account WHERE Name =: OUR_COMPANY_NAME LIMIT 1];
         signedDate = generateSignedDate();
     }
 
@@ -29,7 +32,7 @@ public class GenerateContractPDFController {
     public String getSignedDate() {
         return signedDate;
     }
-    
+
     private String generateSignedDate() {
         String sgnDate = '';
         Date todayDate = Date.today();

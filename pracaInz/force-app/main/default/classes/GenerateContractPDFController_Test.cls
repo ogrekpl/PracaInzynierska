@@ -2,7 +2,6 @@
 global class GenerateContractPDFController_Test {
 
     private final static String ACCOUNT_NAME = 'Test Company';
-    private final static String OUR_COMPANY_NAME = 'ABSR sp.z.o.o';
     private static final String SUPPLIER = 'Supplier';
     private static final String PRODUCT_NAME = 'Mozzarella';
     private static final String CPRODUCT_NAME = 'Mozzarella Classic';
@@ -11,7 +10,7 @@ global class GenerateContractPDFController_Test {
     public static void setupData() {
         Id supplierRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get(SUPPLIER).getRecordTypeId();
         List<Account> accList = TestDataFactory.createSObjectList('Account', new Map<String, Object>{
-            'Name' => new List<String>{ACCOUNT_NAME, OUR_COMPANY_NAME},
+            'Name' => new List<String>{ACCOUNT_NAME, GenerateContractPDFController.OUR_COMPANY_NAME},
             'BillingCity' => new List<String>{'Warsaw', 'Warsaw'}, 
             'BillingCountry' => new List<String>{'Poland', 'Poland'},
             'BillingPostalCode' => new List<String>{'03-111', '01-234'},
@@ -52,7 +51,7 @@ global class GenerateContractPDFController_Test {
     public static void pdfFileFieldsAreHandledCorrect() {
 
         Contract con = [SELECT Id FROM Contract LIMIT 1];
-        Account acc1 = [SELECT Id FROM Account WHERE Name =: OUR_COMPANY_NAME LIMIT 1];
+        Account acc1 = [SELECT Id FROM Account WHERE Name =: GenerateContractPDFController.OUR_COMPANY_NAME LIMIT 1];
         Account acc2 = [SELECT Id FROM Account WHERE Name =: ACCOUNT_NAME LIMIT 1];
 
         Test.startTest();
