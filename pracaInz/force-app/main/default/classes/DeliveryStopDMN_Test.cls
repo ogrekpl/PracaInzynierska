@@ -164,5 +164,56 @@ global class DeliveryStopDMN_Test {
 
         System.assertEquals(51, deliveryStopCreated.Stop_Order__c, 'Delivery Stop has wrong Stop Order value.');
     }
+
+    @isTest
+    public static void stopOrderAreReorderCorectAfterDeletionDeliveryStops() {
+        List<Delivery_Order__c> doList = [SELECT Id FROM Delivery_Order__c LIMIT 2];
+        Warehouse__c wh1 = [SELECT Id FROM Warehouse__c WHERE Name = 'Testowy Magazyn' LIMIT 1];
+        Warehouse__c wh2 = [SELECT Id FROM Warehouse__c WHERE Name = 'Testowy2 Magazyn' LIMIT 1];
+        Set<Integer> stopOrdersSet = new Set<Integer>{3, 8, 10, 15, 20 , 21};
+
+        List<Delivery_Stop__c> deliveryStopList = TestDataFactory.createSObjectList('Delivery_Stop__c', new Map<String,Object>{
+            'Name' => 'x',
+            'Delivery_Order__c' => doList[0].Id,
+            'Warehouse__c' => wh1.Id
+        }, 50);
+
+        List<Delivery_Stop__c> deliveryStopList2 = TestDataFactory.createSObjectList('Delivery_Stop__c', new Map<String,Object>{
+            'Name' => 'x',
+            'Delivery_Order__c' => doList[1].Id,
+            'Warehouse__c' => wh2.Id
+        }, 50);
+
+        Test.startTest();
+        List<Delivery_Stop__c> deliveryStopToDeleteList1 = [SELECT Id FROM Delivery_Stop__c WHERE Stop_Order__c in: stopOrdersSet AND Delivery_Order__c =: doList[0].Id];
+        List<Delivery_Stop__c> deliveryStopToDeleteList2 = [SELECT Id FROM Delivery_Stop__c WHERE Stop_Order__c in: stopOrdersSet AND Delivery_Order__c =: doList[1].Id];
+
+        delete(deliveryStopToDeleteList1);
+        delete(deliveryStopToDeleteList2);
+        Test.stopTest();
+    
+        List<Delivery_Stop__c> deliveryStopToVerifyList1 = [SELECT Stop_Order__c FROM Delivery_Stop__c WHERE Delivery_Order__c =: doList[0].Id ORDER BY Stop_Order__c ASC];
+        List<Delivery_Stop__c> deliveryStopToVerifyList2 = [SELECT Stop_Order__c FROM Delivery_Stop__c WHERE Delivery_Order__c =: doList[1].Id ORDER BY Stop_Order__c ASC];
+
+        Boolean isReorderCorrect = true;
+        Integer stopOrderCounter1 = 1;
+        Integer stopOrderCounter2 = 1;
+
+        for (Delivery_Stop__c thisDS : deliveryStopToVerifyList1) {
+            if (thisDS.Stop_Order__c != stopOrderCounter1) {
+                isReorderCorrect = false;
+            }
+            stopOrderCounter1++;
+        }
+
+        for (Delivery_Stop__c thisDS : deliveryStopToVerifyList2) {
+            if (thisDS.Stop_Order__c != stopOrderCounter2) {
+                isReorderCorrect = false;
+            }
+            stopOrderCounter2++;
+        }
+
+        System.assertEquals(true, isReorderCorrect, 'Stop Orders are reordered incorect.');
+    }
 }
 

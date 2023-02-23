@@ -28,4 +28,32 @@ public with sharing class DeliveryStopDMN {
             thisDS.Name = warehouseMap.get(thisDS.Warehouse__c).Name + ' DS';
         }
     } 
+
+    public static void reorderStopOrders(List<Delivery_Stop__c> toDeleteList) {
+        List<Delivery_Stop__c> deliveryOrdersToUpdate = new List<Delivery_Stop__c>();
+        Set<Id> deliveryOrderIdSet = new Set<Id>();
+
+        for (Delivery_Stop__c thisDS : toDeleteList) {
+            deliveryOrderIdSet.add(thisDS.Delivery_Order__c);
+        }
+
+        List<Delivery_Order__c> deliveryOrderList = [SELECT Id, (SELECT Id, Stop_Order__c FROM Delivery_Stops__r ORDER BY Stop_Order__c ASC) 
+                                                        FROM Delivery_Order__c WHERE Id in: deliveryOrderIdSet];
+
+        for (Delivery_Order__c thisDO : deliveryOrderList) {
+            if (thisDO.Delivery_Stops__r.size() > 0) {
+                Integer stopOrderCounter = 1;
+    
+                for (Delivery_Stop__c thisDS : thisDO.Delivery_Stops__r) {
+                    thisDS.Stop_Order__c = stopOrderCounter;
+                    deliveryOrdersToUpdate.add(thisDS);
+                    stopOrderCounter++;
+                }
+            }
+        }
+
+        if (deliveryOrdersToUpdate.size() > 0) {
+            update(deliveryOrdersToUpdate);
+        }
+    }
 }
