@@ -1,5 +1,5 @@
 @isTest
-global class OpportunityDMN_TEST {
+global class OpportunityDMN_Test {
     
     private static final String CUSTOMER = 'Customer';
     private static final String SUPPLIER = 'Supplier';
@@ -25,13 +25,21 @@ global class OpportunityDMN_TEST {
     }
 
     @isTest
-    public static void OpportunityNameIsCreatedCorrectSELL() {
+    public static void opportunityNameIsCreatedCorrectSELL() {
         Id supplierRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get(SUPPLIER).getRecordTypeId();
         String expectedName = 'SELL Mozzarella Classic - ABSR';
 
         Account acc = [SELECT Id FROM Account WHERE Name =: ACCOUNT_NAME LIMIT 1];
         Company_Product__c cProd = [SELECT Id FROM Company_Product__c WHERE Name =: CPRODUCT_NAME LIMIT 1];
-        Opportunity sellOpp = new Opportunity(Name = 'x', Company_Product__c = cProd.Id, AccountId = acc.Id, StageName = 'Prospecting', CloseDate = date.today(), RecordTypeId = supplierRecordTypeId);
+
+        Opportunity sellOpp = (Opportunity)TestDataFactory.createSObject('Opportunity', new Map<String, Object> {
+            'Name' => 'x',
+            'Company_Product__c' => cProd.Id,
+            'AccountId' => acc.Id,
+            'StageName' => 'Prospecting',
+            'CloseDate' => date.today(),
+            'RecordTypeId' => supplierRecordTypeId
+        }, false);
 
         Test.startTest();
         insert(sellOpp);
@@ -43,13 +51,21 @@ global class OpportunityDMN_TEST {
     }
 
     @isTest
-    public static void OpportunityNameIsCreatedCorrectBUY() {
+    public static void opportunityNameIsCreatedCorrectBUY() {
         Id customerRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get(CUSTOMER).getRecordTypeId();
         String expectedName = 'BUY Mozzarella - ABSR';
 
         Account acc = [SELECT Id FROM Account WHERE Name =: ACCOUNT_NAME LIMIT 1];
         Product2 prod = [SELECT Id FROM Product2 WHERE Name =: PRODUCT_NAME LIMIT 1];
-        Opportunity buyOpp = new Opportunity(Name = 'x', AccountId = acc.Id, Product__c = prod.Id, StageName = 'Prospecting', CloseDate = date.today(), RecordTypeId = customerRecordTypeId);
+
+        Opportunity buyOpp = (Opportunity)TestDataFactory.createSObject('Opportunity', new Map<String, Object> {
+            'Name' => 'x',
+            'Product__c' => prod.Id,
+            'AccountId' => acc.Id,
+            'StageName' => 'Prospecting',
+            'CloseDate' => date.today(),
+            'RecordTypeId' => customerRecordTypeId
+        }, false);
 
         Test.startTest();
         insert(buyOpp);
@@ -61,7 +77,47 @@ global class OpportunityDMN_TEST {
     }
 
     @isTest
-    public static void PriceShouldBeCalculatedCorrect() {
+    public static void opportunityAfterUpdatingNameShouldNotChange() {
+        Id supplierRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get(SUPPLIER).getRecordTypeId();
+        String expectedName = 'SELL Mozzarella Classic - ABSR';
+
+        Account acc = [SELECT Id FROM Account WHERE Name =: ACCOUNT_NAME LIMIT 1];
+        Company_Product__c cProd = [SELECT Id FROM Company_Product__c WHERE Name =: CPRODUCT_NAME LIMIT 1];
+
+        List<Opportunity> suplierOppList = TestDataFactory.createSObjectList('Opportunity', new Map<String, Object> {
+            'Name' => 'x',
+            'Company_Product__c' => cProd.Id,
+            'AccountId' => acc.Id,
+            'StageName' => 'Prospecting',
+            'CloseDate' => date.today(),
+            'RecordTypeId' => supplierRecordTypeId
+        }, 100);
+
+        Test.startTest();
+        List<Opportunity> oppListToUpdate = [SELECT Name FROM Opportunity];
+
+        for (Opportunity thisOpp : oppListToUpdate) {
+            thisOpp.Name = 'xxxx';
+        }
+
+        update oppListToUpdate;
+        Test.stopTest();
+
+        List<Opportunity> oppsToValidateList = [SELECT Name FROM Opportunity];
+
+        Boolean areNamesCorrect = true;
+
+        for (Opportunity thisOpp : oppsToValidateList) {
+            if (!expectedName.equals(thisOpp.Name)) {
+                areNamesCorrect = false;
+            }
+        }
+
+        System.assertEquals(true, areNamesCorrect, 'Names are incorect.');
+    }
+
+    @isTest
+    public static void pricesShouldBeCalculatedCorrect() {
         Id customerRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get(CUSTOMER).getRecordTypeId();
         String expectedName = 'BUY Mozzarella - ABSR';
 
@@ -95,7 +151,7 @@ global class OpportunityDMN_TEST {
     }
     
     @isTest
-    public static void PriceShouldBeNotCalculated() {
+    public static void pricesShouldBeNotCalculated() {
         Id customerRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get(CUSTOMER).getRecordTypeId();
         String expectedName = 'BUY Mozzarella - ABSR';
 
@@ -119,6 +175,45 @@ global class OpportunityDMN_TEST {
 
         for (Opportunity thisOpp : oppToValidateList) {
             if (thisOpp.Amount != null) {
+                isValid = false;
+            }
+        }
+
+        System.assertEquals(true, isValid, 'Total Price is not calculated corect.'); 
+    }
+
+    @isTest
+    public static void pricesShouldBeUpdatedCorrect() {
+        Id customerRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get(CUSTOMER).getRecordTypeId();
+        String expectedName = 'BUY Mozzarella - ABSR';
+
+        Account acc = [SELECT Id FROM Account WHERE Name =: ACCOUNT_NAME LIMIT 1];
+        Product2 prod = [SELECT Id FROM Product2 WHERE Name =: PRODUCT_NAME LIMIT 1];
+        List<Opportunity> oppToInsertList = TestDataFactory.createSObjectList('Opportunity', new Map<String, Object>{
+           'Name' => 'x',
+           'AccountId' => acc.Id,
+           'Product__c' => prod.Id,
+           'StageName' => 'Prospecting',
+           'CloseDate' => date.today(),
+           'RecordTypeId' => customerRecordTypeId,
+           'Quantity__c' => 13,
+           'Package_price__c' => 10
+        }, 100);
+
+        Test.startTest();
+        List<Opportunity> oppToUpdateList = [SELECT Quantity__c, Package_price__c FROM Opportunity LIMIT 100];
+
+        for (Opportunity thisOpp : oppToUpdateList) {
+            thisOpp.Package_price__c = 11;
+        }
+        update(oppToUpdateList);
+        Test.stopTest();
+
+        List<Opportunity> oppToValidateList = [SELECT Amount FROM Opportunity LIMIT 100];
+        Boolean isValid = true;
+
+        for (Opportunity thisOpp : oppToValidateList) {
+            if (thisOpp.Amount != 143) {
                 isValid = false;
             }
         }
