@@ -2,17 +2,12 @@ public with sharing class CalloutManager {
 
     private final String GET = 'GET', PUT = 'PUT', POST = 'POST';
     private final Set<Integer> ERROR_CODES = new Set<Integer>{400, 404};
-    public HttpRequest request;
+    private HttpRequest request;
     private HttpResponse response;
-    private String credential;
     private String methodType;
     private String endpoint;
     private String url;
-    Http http;
-    
-    public String Credential() {
-        return credential;
-    }
+    private Http http;
 
     public HttpResponse Response() {
         return response;
