@@ -13,9 +13,14 @@ public with sharing class CalloutManager {
         return response;
     }
 
-    public CalloutManager(String url) {
+    public CalloutManager() {
         this.request = new HttpRequest();
+        setHeader();
+    }
+
+    public CalloutManager(String url) {
         this.url = url;
+        this.request = new HttpRequest();
         setHeader();
     }
 
@@ -60,6 +65,25 @@ public with sharing class CalloutManager {
         }
 
         request.setEndpoint(url + '/' + endpoint);
+        http = new Http();
+        switch on methodType {
+            when 'GET' {		
+                makeGetCallout();
+            }	
+            when 'PUT' {		
+                makePutCallout();
+            }
+            when 'POST' {
+                makePostCallout();
+            }
+            when else {		 
+                throw new CalloutHandllerException('No callout method type provided.');
+            }
+        }
+    }
+
+    public void makeCallout(String newUrlEndpoint) {
+        request.setEndpoint(newUrlEndpoint);
         http = new Http();
         switch on methodType {
             when 'GET' {		
