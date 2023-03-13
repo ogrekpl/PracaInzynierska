@@ -216,4 +216,3 @@ global class DeliveryStopDMN_Test {
         System.assertEquals(true, isReorderCorrect, 'Stop Orders are reordered incorect.');
     }
 }
-

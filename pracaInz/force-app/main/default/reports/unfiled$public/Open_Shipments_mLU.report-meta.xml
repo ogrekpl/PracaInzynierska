@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>Shipment__c.Loading_Warehouse__c</field>
+    </columns>
+    <columns>
+        <field>Shipment__c.Destination_Warehouse__c</field>
+    </columns>
+    <columns>
+        <field>Shipment__c.Pallets_amount__c</field>
+    </columns>
+    <columns>
+        <field>Shipment__c.Max_Pallets__c</field>
+    </columns>
+    <columns>
+        <field>Shipment__c.Status__c</field>
+    </columns>
+    <columns>
+        <field>FK_CNTC_FIRST_NAME</field>
+    </columns>
+    <columns>
+        <field>FK_NAME</field>
+    </columns>
+    <currency>PLN</currency>
+    <filter>
+        <criteriaItems>
+            <column>Shipment__c.Status__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Planning,Information provided,Waiting for loading,Loading,In transport,Awaiting unloading</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Tabular</format>
+    <name>Open Shipments</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>CustomEntity$Shipment__c@Shipment__c.Driver__c</reportType>
+    <scope>user</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CUST_CREATED_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

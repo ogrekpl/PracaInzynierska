@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Product_must_be_selected</fullName>
+    <active>true</active>
+    <errorConditionFormula>IF(RecordType.Name = &apos;Customer&apos; &amp;&amp; NOT(ISBLANK(Product__c)) , false, 
+ IF(RecordType.Name = &apos;Supplier&apos; &amp;&amp; NOT(ISBLANK( Company_Product__c)), false, true))</errorConditionFormula>
+    <errorMessage>You need to select Product or Company Product</errorMessage>
+</ValidationRule>

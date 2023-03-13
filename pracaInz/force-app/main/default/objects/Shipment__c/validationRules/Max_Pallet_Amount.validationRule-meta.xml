@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Max_Pallet_Amount</fullName>
+    <active>true</active>
+    <errorConditionFormula>Pallets_amount__c &gt; Max_Pallets__c</errorConditionFormula>
+    <errorMessage>Asigned pallets amount is greater than max pallets avaible for this shipment.</errorMessage>
+</ValidationRule>

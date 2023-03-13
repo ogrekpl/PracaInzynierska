@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pallets_amount__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Total amount of pallets assinged to this shipment.</inlineHelpText>
+    <label>Pallets amount</label>
+    <summarizedField>Delivery_Shipment__c.Pallet_amount__c</summarizedField>
+    <summaryForeignKey>Delivery_Shipment__c.Shipment__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

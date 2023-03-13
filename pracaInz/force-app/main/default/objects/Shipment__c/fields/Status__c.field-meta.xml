@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <externalId>false</externalId>
+    <label>Status</label>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Planning</fullName>
+                <default>true</default>
+                <label>Planning</label>
+            </value>
+            <value>
+                <fullName>Information provided</fullName>
+                <default>false</default>
+                <label>Information provided</label>
+            </value>
+            <value>
+                <fullName>Waiting for loading</fullName>
+                <default>false</default>
+                <label>Waiting for loading</label>
+            </value>
+            <value>
+                <fullName>Loading</fullName>
+                <default>false</default>
+                <label>Loading</label>
+            </value>
+            <value>
+                <fullName>In transport</fullName>
+                <default>false</default>
+                <label>In transport</label>
+            </value>
+            <value>
+                <fullName>Awaiting unloading</fullName>
+                <default>false</default>
+                <label>Awaiting unloading</label>
+            </value>
+            <value>
+                <fullName>Delivered</fullName>
+                <default>false</default>
+                <label>Delivered</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

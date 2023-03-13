@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Approval_Is_Need_To_Go_Further</fullName>
+    <active>true</active>
+    <errorConditionFormula>ISPICKVAL(PRIORVALUE(Status), &apos;Verification&apos;) &amp;&amp; NOT(ISPICKVAL(Status, &apos;In Approval Process&apos;) || ISPICKVAL(Status, &apos;Verification&apos;))</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>Contract need go thru approval procces in order to change it&apos;s status.</errorMessage>
+</ValidationRule>

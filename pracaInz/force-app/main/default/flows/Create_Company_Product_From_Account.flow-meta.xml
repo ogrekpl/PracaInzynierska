@@ -10,7 +10,7 @@
             <assignToReference>CompanyProduct.Product__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>recordId</elementReference>
+                <elementReference>Product.recordId</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -45,7 +45,7 @@
             <assignToReference>CompanyProduct.Account__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Account_Lookup.recordId</elementReference>
+                <elementReference>recordId</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -67,7 +67,7 @@
     </dynamicChoiceSets>
     <environments>Default</environments>
     <interviewLabel>Create Company Product From Product {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Create Company Product From Product</label>
+    <label>Create Company Product From Account</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -113,15 +113,7 @@
             <isRequired>true</isRequired>
         </fields>
         <fields>
-            <name>Quality</name>
-            <choiceReferences>QualityPicklistSet</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Quality</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>Account_Lookup</name>
+            <name>Product</name>
             <extensionName>flowruntime:lookup</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
@@ -131,21 +123,15 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>label</name>
-                <value>
-                    <stringValue>Account</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
                 <name>fieldApiName</name>
                 <value>
-                    <stringValue>Account__c</stringValue>
+                    <stringValue>Product__c</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>required</name>
+                <name>label</name>
                 <value>
-                    <booleanValue>true</booleanValue>
+                    <stringValue>Product</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -154,9 +140,23 @@
                     <numberValue>1.0</numberValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Quality</name>
+            <choiceReferences>QualityPicklistSet</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Quality</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>Brand_Name</name>

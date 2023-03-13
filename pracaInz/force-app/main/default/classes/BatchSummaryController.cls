@@ -1,4 +1,3 @@
-
 public with sharing class BatchSummaryController {
     private final static Set<String> TANSPORTATION_STATUSES = new Set<String> {'Waiting for loading', 'Loading', 'In transport', 'Awaiting unloading', 'Unloading'};  
     private final static String DELIVERED_STATUS = 'Delivered';

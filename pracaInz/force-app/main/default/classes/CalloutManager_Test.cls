@@ -80,4 +80,3 @@ global class CalloutManager_Test {
         System.assertEquals(false, cm.getBody());
     }
 }
-

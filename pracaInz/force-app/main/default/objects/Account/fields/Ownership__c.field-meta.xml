@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ownership__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Typ działalności</inlineHelpText>
+    <label>Ownership</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Spółka Z.O.O</fullName>
+                <default>false</default>
+                <label>Spółka Z.O.O</label>
+            </value>
+            <value>
+                <fullName>Jednoosobowa działalność gospodarcza</fullName>
+                <default>false</default>
+                <label>Jednoosobowa działalność gospodarcza</label>
+            </value>
+            <value>
+                <fullName>Spółka cywilna</fullName>
+                <default>false</default>
+                <label>Spółka cywilna</label>
+            </value>
+            <value>
+                <fullName>Spółka jawna,</fullName>
+                <default>false</default>
+                <label>Spółka jawna,</label>
+            </value>
+            <value>
+                <fullName>Spółka partnerska</fullName>
+                <default>false</default>
+                <label>Spółka partnerska</label>
+            </value>
+            <value>
+                <fullName>Spółka komandytowa</fullName>
+                <default>false</default>
+                <label>Spółka komandytowa</label>
+            </value>
+            <value>
+                <fullName>Spółka komandytowo-akcyjna,</fullName>
+                <default>false</default>
+                <label>Spółka komandytowo-akcyjna,</label>
+            </value>
+            <value>
+                <fullName>spółka z ograniczoną odpowiedzialnością,</fullName>
+                <default>false</default>
+                <label>spółka z ograniczoną odpowiedzialnością,</label>
+            </value>
+            <value>
+                <fullName>spółka akcyjna.</fullName>
+                <default>false</default>
+                <label>spółka akcyjna.</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

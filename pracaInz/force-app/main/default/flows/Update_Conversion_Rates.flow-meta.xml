@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Update_Conversion_Rates</name>
+        <label>Update Conversion Rates</label>
+        <locationX>1176</locationX>
+        <locationY>314</locationY>
+        <actionName>NBPCurrencyCallout</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+    </actionCalls>
+    <apiVersion>57.0</apiVersion>
+    <description>Update Conversion Rates on daily basis</description>
+    <environments>Default</environments>
+    <interviewLabel>Update Conversion Rates {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Update Conversion Rates</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>1037</locationX>
+        <locationY>48</locationY>
+        <connector>
+            <targetReference>Update_Conversion_Rates</targetReference>
+        </connector>
+        <schedule>
+            <frequency>Daily</frequency>
+            <startDate>2023-03-06</startDate>
+            <startTime>01:30:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
