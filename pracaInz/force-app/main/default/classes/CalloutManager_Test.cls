@@ -69,7 +69,7 @@ global class CalloutManager_Test {
         }
     }
 
-    @isTest //TODO
+    @isTest
     public static void testCalloutManager404StatusCode() {
         CalloutManager cm = new CalloutManager('test.com', 'abc', 'POST');
         Map<String, String> headers = new Map<String, String>{'Authorization' => 'OAuth'};
@@ -78,5 +78,59 @@ global class CalloutManager_Test {
         Test.setMock(HttpCalloutMock.class, new CalloutManagerMockHttpResponse404());
         cm.makeCallout();    
         System.assertEquals(false, cm.getBody());
+    }
+
+    @isTest
+    public static void testCalloutManagerGET2() {
+        CalloutManager cm = new CalloutManager();
+        Map<String, String> headers = new Map<String, String>{'Authorization' => 'OAuth'};
+        cm.createHeader(headers);
+        cm.setGetMethod();
+        Test.setMock(HttpCalloutMock.class, new CalloutManagerMockHttpResponse());
+        cm.makeCallout('test.com');
+        HttpResponse httpRes = cm.Response();
+        Map<String, String> outputMap = (Map<String, String>)JSON.deserialize((String)cm.getBody(), Map<String, String>.class);
+        System.assertEquals('test', outputMap.get('test'));
+    }
+
+    @isTest
+    public static void testCalloutManagerPUT2() {
+        CalloutManager cm = new CalloutManager();
+        Map<String, String> headers = new Map<String, String>{'Authorization' => 'OAuth'};
+        cm.createHeader(headers);
+        cm.setPutMethod();
+        cm.setBody('test123');
+        Test.setMock(HttpCalloutMock.class, new CalloutManagerMockHttpResponse());
+        cm.makeCallout('test.com');
+        HttpResponse httpRes = cm.Response();
+        Map<String, String> outputMap = (Map<String, String>)JSON.deserialize((String)cm.getBody(), Map<String, String>.class);
+        System.assertEquals('test', outputMap.get('test'));
+    }
+
+    @isTest
+    public static void testCalloutManagerPOST2() {
+        CalloutManager cm = new CalloutManager();
+        Map<String, String> headers = new Map<String, String>{'Authorization' => 'OAuth'};
+        cm.createHeader(headers);
+        cm.setPostMethod();
+        Test.setMock(HttpCalloutMock.class, new CalloutManagerMockHttpResponse());
+        cm.makeCallout('test.com');
+        HttpResponse httpRes = cm.Response();
+        Map<String, String> outputMap = (Map<String, String>)JSON.deserialize((String)cm.getBody(), Map<String, String>.class);
+        System.assertEquals('test', outputMap.get('test'));
+    }
+
+    @isTest
+    public static void testCalloutManagerNoMethod2() {
+        CalloutManager cm = new CalloutManager();
+        Map<String, String> headers = new Map<String, String>{'Authorization' => 'OAuth'};
+        cm.createHeader(headers);
+        Test.setMock(HttpCalloutMock.class, new CalloutManagerMockHttpResponse());
+        try {
+            cm.makeCallout('test.com');
+        }
+        catch(Exception e) {
+            System.assertEquals('No callout method type provided.', e.getMessage());
+        }
     }
 }

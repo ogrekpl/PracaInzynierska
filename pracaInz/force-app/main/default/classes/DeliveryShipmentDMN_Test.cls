@@ -68,7 +68,7 @@ global class DeliveryShipmentDMN_Test {
             'Destination_Warehouse__c' => wh.Id,
             'Loading_Warehouse__c' => wh2.Id,
             'Max_Pallets__c' => 100,
-            'Status__c' => 'Planning'
+            'Status__c' => 'Delivered'
         }, 10);
     }
 
@@ -144,5 +144,55 @@ global class DeliveryShipmentDMN_Test {
         }
 
         System.assertEquals(true, areNamesCorrect, 'Names are validated incorrect.');
+    }
+
+    @isTest
+    public static void toManyProofOfDeliveriesAssignedToDeliveryShipment() {
+        List<Id> shipmentIdList = new List<Id>();
+        List<Id> dsIdList = new List<Id>();
+        Map<Id, Shipment__c> shipmentsMap = new Map<Id, Shipment__c>([SELECT Name FROM Shipment__c LIMIT 10]);
+        Delivery_Order__c deliveryOrder = [SELECT Name FROM Delivery_Order__c LIMIT 1];
+
+        for (Shipment__c thisShipment : shipmentsMap.values()) {
+            shipmentIdList.add(thisShipment.Id);
+        }
+
+        List<Delivery_Shipment__c> deliveryShipmentToCreateList = TestDataFactory.createSObjectList('Delivery_Shipment__c', new Map<String, Object>{
+            'Pallet_amount__c' => 1,
+            'Quantity__c' => 1,
+            'Delivery_Order__c' => deliveryOrder.Id,
+            'Shipment__c' => shipmentIdList
+        }, 10);
+
+        for (Delivery_Shipment__c thisDS : deliveryShipmentToCreateList) {
+            dsIdList.add(thisDS.Id);
+        }
+        
+        List<Proof_of_Delivery__c> proofOfDeliveryListToInsert = TestDataFactory.createSObjectList('Proof_of_Delivery__c', new Map<String, Object> {
+            'Delivery_Shipment__c' => dsIdList,
+            'Pallet_Delivered_Amount__c' => 1,
+            'Delivered_quantity__c' => 1
+        }, 10);
+
+        List<Proof_of_Delivery__c> proofOfDeliveryListToInsert2 = TestDataFactory.createSObjectList('Proof_of_Delivery__c', new Map<String, Object> {
+            'Delivery_Shipment__c' => dsIdList,
+            'Pallet_Delivered_Amount__c' => 1,
+            'Delivered_quantity__c' => 1
+        }, 10, false);
+
+        Boolean gotError = false;
+        Test.startTest();
+
+        try {
+            insert proofOfDeliveryListToInsert2;
+        } catch (Exception e) {
+            if (e.getMessage().contains(DeliveryShipmentDMN.ERROR_MSG)) {
+                gotError = true;
+            }
+        }
+
+        Test.stopTest();
+
+        System.assertEquals(true, gotError, 'No validation appears.');
     }
 }
