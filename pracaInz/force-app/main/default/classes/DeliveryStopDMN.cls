@@ -2,7 +2,8 @@ public with sharing class DeliveryStopDMN {
     public static void setUpStopOrder(Map<Id, List<Delivery_Stop__c>> deliveryOrderIdToDeliveryStopListMap) {
 
         Map<Id, Delivery_Order__c> deliveryOrderMap = new Map<Id, Delivery_Order__c>(
-            [SELECT Id, (SELECT Id FROM Delivery_Stops__r) FROM Delivery_Order__c WHERE Id in: deliveryOrderIdToDeliveryStopListMap.keySet()]);
+            [SELECT Id, (SELECT Id FROM Delivery_Stops__r) FROM Delivery_Order__c 
+                WHERE Id in: deliveryOrderIdToDeliveryStopListMap.keySet()]);
 
         for (Id thisDSId : deliveryOrderIdToDeliveryStopListMap.keySet()) {
 

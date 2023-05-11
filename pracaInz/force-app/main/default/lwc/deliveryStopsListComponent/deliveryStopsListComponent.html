@@ -1,0 +1,14 @@
+<template>
+    <template for:each={dsList.data} for:item="ds">
+        <div key={ds.Id}>
+            <lightning-card>
+                <c-delivery-stop-tile-component record-id={ds.Id}></c-delivery-stop-tile-component>
+            </lightning-card>
+        </div>
+    </template>
+    <lightning-button-group>
+        <lightning-button label="Save order" icon-name="utility:save"></lightning-button>
+        <lightning-button label="Refresh"></lightning-button>
+        <lightning-button label="New Delivery Stop"></lightning-button>
+    </lightning-button-group>
+</template>

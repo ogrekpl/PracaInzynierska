@@ -12,7 +12,8 @@ public with sharing class DeliveryShipmentDMN {
         }
 
         Map<Id, Shipment__c> shipmentsMap = new Map<Id, Shipment__c>([SELECT Name FROM Shipment__c WHERE Id in: shipmentIdsSet]);
-        Map<Id, Delivery_Order__c> deliveryOrdersMap = new Map<Id, Delivery_Order__c>([SELECT Name FROM Delivery_Order__c WHERE Id in: deliveryOrderIdsSet]);
+        Map<Id, Delivery_Order__c> deliveryOrdersMap = new Map<Id, Delivery_Order__c>([SELECT Name FROM Delivery_Order__c 
+                                                                WHERE Id in: deliveryOrderIdsSet]);
 
         for (Delivery_Shipment__c thisDS : dsList) {
             thisDS.Name = deliveryOrdersMap.get(thisDS.Delivery_Order__c).Name + '-' + shipmentsMap.get(thisDS.Shipment__c).Name;

@@ -6,7 +6,6 @@
         	document.getElementById('lnkDownload').click();
       };
       
-      //trigger auto-download
     	window.setTimeout(auto_download, 10);
     </script>
 </apex:page>

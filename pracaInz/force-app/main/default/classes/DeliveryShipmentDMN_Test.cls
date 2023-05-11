@@ -82,7 +82,8 @@ global class DeliveryShipmentDMN_Test {
             shipmentIdList.add(thisShipment.Id);
         }
 
-        List<Delivery_Shipment__c> deliveryShipmentToCreateList = TestDataFactory.createSObjectList('Delivery_Shipment__c', new Map<String, Object>{
+        List<Delivery_Shipment__c> deliveryShipmentToCreateList = TestDataFactory.createSObjectList('Delivery_Shipment__c', 
+        new Map<String, Object>{
             'Pallet_amount__c' => 1,
             'Delivery_Order__c' => deliveryOrder.Id,
             'Shipment__c' => shipmentIdList
@@ -92,7 +93,8 @@ global class DeliveryShipmentDMN_Test {
         insert(deliveryShipmentToCreateList);
         Test.stopTest();
 
-        List<Delivery_Shipment__c> deliveryShipmentCreatedList = [SELECT Name, Delivery_Order__c, Shipment__c FROM Delivery_Shipment__c LIMIT 10];
+        List<Delivery_Shipment__c> deliveryShipmentCreatedList = [SELECT Name, Delivery_Order__c, Shipment__c 
+                                                                    FROM Delivery_Shipment__c LIMIT 10];
         Boolean areNamesCorrect = true;
 
         for (Delivery_Shipment__c thisDS : deliveryShipmentCreatedList) {
